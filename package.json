@@ -26,7 +26,11 @@
   },
   "homepage": "https://github.com/jesseweed/firebase-boilerplate#readme",
   "dependencies": {
+    "dotenv": "^6.0.0",
     "emoji-js": "^3.4.1",
+    "firebase": "^5.4.0",
+    "firebaseui": "^3.3.0",
+    "firestorter": "^0.14.2",
     "helmet": "^3.13.0",
     "http": "0.0.0",
     "https": "^1.0.0",

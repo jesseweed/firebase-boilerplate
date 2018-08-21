@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 // IMPORTS
 const compression    = require('compression')
@@ -18,10 +18,10 @@ const helmet         = require('helmet')
 const app            = express()
 const ROOT           = path.resolve(__dirname, '../')
 const ENV            = process.env.NODE_ENV || 'production'
-const PORT           = process.env.PORT || '1981';
+const PORT           = process.env.PORT || '1981'
 
-let PUBLIC = `${ROOT}/public`;
-if (ENV === 'development') PUBLIC = `${ROOT}/static`;
+let PUBLIC = `${ROOT}/public`
+if (ENV === 'development') PUBLIC = `${ROOT}/static`
 
 app.use(compression())
 app.use(cors())
@@ -37,7 +37,7 @@ try {
 }
 
 // ROUTES
-app.get('/api/:method?', (req, res) => {
+app.get('/api/:method?/:param?', (req, res) => {
   res.send({
     params: req.params
   })
@@ -62,7 +62,7 @@ if (ENV === 'development') {
 
     const host = `https://localhost:${PORT}`.blue
 
-    return console.log(`\n${emoji.get('rocket')}  Node server started at ${host}\n`);
+    return console.log(`\n${emoji.get('rocket')}  Node server started at ${host}\n`)
   })
 
 } else {

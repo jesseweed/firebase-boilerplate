@@ -1,31 +1,33 @@
+require('dotenv').config()
+
 /* eslint-disable no-unused-vars */
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const CleanWebpackPlugin       = require('clean-webpack-plugin')
-const colors                   = require('colors')
-const CopyWebpackPlugin        = require('copy-webpack-plugin')
-const DashboardPlugin          = require('webpack-dashboard/plugin')
-const emoji                    = require('node-emoji')
-const FaviconsWebpackPlugin    = require('favicons-webpack-plugin')
-const fs                       = require('fs')
-const HtmlWebpackPlugin        = require('html-webpack-plugin')
-const MiniCssExtractPlugin     = require('mini-css-extract-plugin')
-const path                     = require('path')
-const PreloadWebpackPlugin     = require('preload-webpack-plugin')
-const UglifyJsPlugin           = require('uglifyjs-webpack-plugin')
-const webpack                  = require('webpack')
-const WorkboxPlugin            = require('workbox-webpack-plugin')
+const { BundleAnalyzerPlugin }     = require('webpack-bundle-analyzer')
+const CleanWebpackPlugin           = require('clean-webpack-plugin')
+const colors                       = require('colors')
+const CopyWebpackPlugin            = require('copy-webpack-plugin')
+const DashboardPlugin              = require('webpack-dashboard/plugin')
+const emoji                        = require('node-emoji')
+const FaviconsWebpackPlugin        = require('favicons-webpack-plugin')
+const fs                           = require('fs')
+const HtmlWebpackPlugin            = require('html-webpack-plugin')
+const MiniCssExtractPlugin         = require('mini-css-extract-plugin')
+const path                         = require('path')
+const PreloadWebpackPlugin         = require('preload-webpack-plugin')
+const UglifyJsPlugin               = require('uglifyjs-webpack-plugin')
+const webpack                      = require('webpack')
+const WorkboxPlugin                = require('workbox-webpack-plugin')
 
-const CONFIG                   = require('./config/global')
+const CONFIG                       = require('./config/global')
 
-const DEST_DIR                 = path.resolve(__dirname, './public')
-const ROOT_DIR                 = path.resolve(__dirname, './')
-const SOURCE_DIR               = path.resolve(__dirname, './client')
+const DEST_DIR                     = path.resolve(__dirname, './public')
+const ROOT_DIR                     = path.resolve(__dirname, './')
+const SOURCE_DIR                   = path.resolve(__dirname, './client')
 
-process.env.NODE_ENV           = process.env.NODE_ENV || 'production'
+process.env.NODE_ENV               = process.env.NODE_ENV || 'production'
 
 const ENV   = process.env.NODE_ENV
 const isDev = ENV !== 'production'
-const PORT  = CONFIG.port;
+const PORT  = CONFIG.port
 
 class Reporter {
   apply(compiler) {
@@ -34,9 +36,9 @@ class Reporter {
       compiler.hooks.done.tap('Reporter', () => {
         setTimeout(() => {
           const host = `https://localhost:${PORT}`.yellow
-          console.log(`\n${emoji.get('zap')} Project is running at ${host} ${emoji.get('zap')}\n`);
+          console.log(`\n${emoji.get('zap')} Project is running at ${host} ${emoji.get('zap')}\n`)
         }, 500)
-      });
+      })
     }
 
   }
@@ -170,7 +172,7 @@ const WP_CONFIG = {
       filename: 'main.css',
     }),
     new PreloadWebpackPlugin(),
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'FB_API_KEY', 'FB_AUTH_DOMAIN', 'FB_DB_URL', 'FB_PROJECT_ID', 'FB_STORAGE_BUCKET', 'FB_MESSAGING_SENDER_ID']),
     new WorkboxPlugin.InjectManifest({
       swSrc: `${SOURCE_DIR}/Util/ServiceWorker.js`,
       swDest: 'sw.js',

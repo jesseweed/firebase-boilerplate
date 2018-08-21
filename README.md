@@ -10,6 +10,26 @@ $ npm install && cd functions && npm install && cd ../
 
 ---
 
+### Configure Firebase
+Firebase with will be setup and configured automatically in the Mobx store. However, for security reasons, the configuration keys are stored in a `.env` file, and kept out of the repo. Simply create a file name `.env` in the root of the project with info like this:
+
+##### Required Keys
+```
+FB_API_KEY= 12345__67890
+FB_PROJECT_ID= my-app
+FB_MESSAGING_SENDER_ID= 125042732329
+```
+
+##### Required Keys
+If omitted, these will be inferred based on the project id.
+```
+FB_STORAGE_BUCKET= my-app.appspot.com
+FB_AUTH_DOMAIN= my-app.firebaseapp.com
+FB_DB_URL= https://my-app.firebaseio.com
+```
+
+---
+
 ### Local Develoment
 For most of your work you will want to simply run: `npm start` and then open [https://localhost:3000](https://localhost:3000)
 
