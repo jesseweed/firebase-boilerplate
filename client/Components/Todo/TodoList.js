@@ -4,8 +4,8 @@ import PropTypes            from 'prop-types'
 import { h, Component }     from 'preact'
 
 // UTILITIES
-import Util                 from '../../Util'
-import TodoItem             from './TodoItem'
+import Util                 from '@Util'
+import TodoItem             from '@Components/Todo/TodoItem'
 
 @inject('store') @observer
 class TodoList extends Component {

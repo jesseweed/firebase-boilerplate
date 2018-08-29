@@ -1,6 +1,10 @@
 {
   "verbose": true,
-  "ignore": ["*.test.js", "fixtures/*"],
+  "ignore": [
+    "client/**/*"
+    "*.test.js",
+    "fixtures/*"
+  ],
   "watch": [
     "server/"
   ],

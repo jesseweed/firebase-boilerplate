@@ -1,34 +1,42 @@
 // MODULES
-import Router         from 'preact-router'
-import { h, render }  from 'preact'
-import { Provider }   from 'mobx-preact'
-import Store          from './Store'
+import { Router, Route, Switch } from 'react-router'
+import { h, render }                         from 'preact'
+import { Provider }                          from 'mobx-preact'
+import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
+import createBrowserHistory                  from 'history/createBrowserHistory';
 
 // UTILITIES
-import Util                 from './Util'
-
-// COMPONENTS
-import Home                 from './Pages/Home/Home'
-import Login                 from './Pages/Login/Login'
+// import Util           from '@Util'
+// import Authenticator                         from '@Util/Authenticator';
+import Store                                 from '@Store'
+import Routes                                from '@App/Routes'
 
 // STYLES
-import './App.styl'
+import '@Style/Base.styl'
 
-const util   = new Util('App')
-const { logger } = util
+console.log('App.js OK');
+
+const appStore = new Store();
+const routingStore = new RouterStore();
+
+const browserHistory = createBrowserHistory();
+const history = syncHistoryWithStore(browserHistory, routingStore);
+
+const stores = {
+  routing: Store,
+  store: appStore
+};
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  logger.info('ready')
-
   render(
-    <Provider store={new Store()}>
-      <Router>
-        <Home path='/' />
-        <Login path='/login' />
+    <Provider {...stores}>
+      <Router history={history}>
+        <Switch>
+          {Routes.map(route => <Route {...route} key={route.name} />)}
+        </Switch>
       </Router>
     </Provider>,
-    // document.body
     document.getElementById('app')
   )
 

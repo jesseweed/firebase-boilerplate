@@ -1,12 +1,13 @@
-import { observable }     from 'mobx'
-import { enableLogging }  from 'mobx-logger'
+// DEPENDENCIES
+import { observable }                 from 'mobx'
+import { enableLogging }              from 'mobx-logger'
 
 // CONFIG
-import Config  from '../../config/global'
+import Config                         from '@Config/Global'
 
 // UTILITIES
-import Util                 from '../Util'
-import { Collection, firebase }                 from '../Util/Firebase'
+import Util                           from '@Util'
+import { Collection, firebase, auth } from '@Store/firebase'
 
 class Store {
 
@@ -19,27 +20,86 @@ class Store {
   @observable userData = {
     displayName: null,
     email: null,
-    uid: null
+    uid: null,
+    loggedIn: false
   }
+
+  @observable haveCheckedUser = false
 
   constructor() {
     this.initialize()
-
     this.firebase = firebase
+    // this.getUser()
+    this.getUser = this.getUser.bind(this)
+    this.watchUser()
+  }
 
-    this.firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.logger.log('LOGGED IN', user)
-        this.loggedIn = true
-        this.userData = {
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid
+  async watchUser() {
+
+    auth.onAuthStateChanged((user) => {
+
+      if (user && typeof user.isAnonymous !== 'undefined') {
+        const data = {
+          displayName: user.displayName || null,
+          emailVerified: user.emailVerified,
+          photoURL: user.photoURL,
+          uid: user.uid,
+          loggedIn: !user.isAnonymous,
+          email: user.email
         }
-      } else {
-        this.logger.log('NOT LOGGED IN')
+        this.userData = data
+        console.log('SET USER!!', data)
       }
+
+      setTimeout(() => {
+        this.haveCheckedUser = true;
+      }, 400);
+
+      return user
     })
+
+  }
+
+  getUser() {
+    const user = auth.currentUser
+
+    if (user && typeof user.isAnonymous !== 'undefined' && !user.isAnonymous) {
+      this.userData = {
+        displayName: user.displayName,
+        emailVerified: user.emailVerified,
+        photoURL: user.photoURL,
+        uid: user.uid,
+        loggedIn: !user.isAnonymous,
+        email: user.email
+      }
+    }
+
+    setTimeout(() => {
+      this.haveCheckedUser = true;
+    }, 400);
+
+    return this.user
+  }
+
+  signup(email, password) {
+    return auth.createUserWithEmailAndPassword(email, password)
+  }
+
+  login(email, password) {
+    this.logger.log('LOGIN', email, password)
+    return auth.signInWithEmailAndPassword(email, password)
+  }
+
+  logout() {
+    return auth.signOut()
+  }
+
+  passwordReset(email) {
+    return auth.sendPasswordResetEmail(email)
+  }
+
+  passwordUpdate(password) {
+    return auth.currentUser.updatePassword(password)
   }
 
   initialize() {

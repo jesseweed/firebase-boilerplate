@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 /* eslint-disable no-unused-vars */
-const { BundleAnalyzerPlugin }     = require('webpack-bundle-analyzer')
 const CleanWebpackPlugin           = require('clean-webpack-plugin')
 const colors                       = require('colors')
 const CopyWebpackPlugin            = require('copy-webpack-plugin')
@@ -17,7 +16,7 @@ const UglifyJsPlugin               = require('uglifyjs-webpack-plugin')
 const webpack                      = require('webpack')
 const WorkboxPlugin                = require('workbox-webpack-plugin')
 
-const CONFIG                       = require('./config/global')
+const CONFIG                       = require('./client/Config/Global')
 
 const DEST_DIR                     = path.resolve(__dirname, './public')
 const ROOT_DIR                     = path.resolve(__dirname, './')
@@ -45,7 +44,7 @@ class Reporter {
 }
 
 const WP_CONFIG = {
-  entry: `${SOURCE_DIR}/App.js`,
+  entry: ['babel-polyfill', `${SOURCE_DIR}/App.js`],
   mode: ENV,
   devtool: ENV === 'development' ? 'cheap-module-eval-source-map' : 'source-map',
   watch: ENV === 'development',
@@ -146,6 +145,19 @@ const WP_CONFIG = {
       })
     ]
   },
+  resolve: {
+    alias: {
+      '@App': `${SOURCE_DIR}`,
+      '@Components': `${SOURCE_DIR}/Components`,
+      '@Config': `${SOURCE_DIR}/Config`,
+      '@Containers': `${SOURCE_DIR}/Containers`,
+      '@Store': `${SOURCE_DIR}/Store`,
+      '@Util': `${SOURCE_DIR}/Util`,
+      '@Style': `${SOURCE_DIR}/Style`,
+      react: 'preact-compat',
+      'react-dom': 'preact-compat'
+    }
+  },
   plugins: [
     new CleanWebpackPlugin([DEST_DIR]),
     new HtmlWebpackPlugin({
@@ -180,13 +192,6 @@ const WP_CONFIG = {
     }),
     new DashboardPlugin(),
     new Reporter(),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      openAnalyzer: false,
-      generateStatsFile: true,
-      reportFilename: 'package-stats.html',
-      statsFilename: 'package-stats.json'
-    })
   ]
 }
 

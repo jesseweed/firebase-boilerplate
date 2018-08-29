@@ -2,12 +2,13 @@
 import { inject, observer } from 'mobx-preact'
 import PropTypes            from 'prop-types'
 import { h, Component }     from 'preact'
+// import React                from 'react';
 
 // UTILITIES
-import Util                 from '../../Util'
+import Util                 from '@Util'
 
 // COMPONENTS
-import TodoList             from '../../Components/Todo/TodoList'
+import TodoList             from '@Components/Todo/TodoList'
 
 import './Home.styl'
 
@@ -21,6 +22,8 @@ class Home extends Component {
     this.state = {
       apiData: []
     }
+
+    this.callApi = this.callApi.bind(this);
 
     this.callApi('/api/foo/0')
 
@@ -49,7 +52,7 @@ class Home extends Component {
         <TodoList />
         <br />
         <h3>API Call Log</h3>
-        <button onClick={this.callApi.bind(this, `/api/foo/${this.state.apiData.length}`)} type="button">
+        <button onClick={this.callApi.bind(`/api/foo/${this.state.apiData.length}`)} type="button">
           Make a new API request
         </button>
         <br /><br />

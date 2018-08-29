@@ -1,6 +1,10 @@
+// NAMED IMPORTS
 import firebase from 'firebase/app'
-import 'firebase/firestore'
 import { initFirestorter, Collection } from 'firestorter'
+
+// ANONYMOUS IMPORTS
+import 'firebase/firestore'
+import 'firebase/auth'
 
 const config = {
   apiKey: process.env.FB_API_KEY,
@@ -11,7 +15,9 @@ const config = {
   messagingSenderId: process.env.FB_MESSAGING_SENDER_ID
 }
 
-firebase.initializeApp(config)
+if (!firebase.apps.length) {
+  firebase.initializeApp(config)
+}
 
 firebase.firestore().settings({
   timestampsInSnapshots: true
@@ -19,4 +25,6 @@ firebase.firestore().settings({
 
 initFirestorter({ firebase: firebase })
 
-export { Collection, firebase }
+const auth = firebase.auth();
+
+export { Collection, firebase, auth }
