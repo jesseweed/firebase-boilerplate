@@ -4,9 +4,7 @@ require('dotenv').config()
 const CleanWebpackPlugin           = require('clean-webpack-plugin')
 const colors                       = require('colors')
 const CopyWebpackPlugin            = require('copy-webpack-plugin')
-const DashboardPlugin              = require('webpack-dashboard/plugin')
 const emoji                        = require('node-emoji')
-const FaviconsWebpackPlugin        = require('favicons-webpack-plugin')
 const fs                           = require('fs')
 const HtmlWebpackPlugin            = require('html-webpack-plugin')
 const MiniCssExtractPlugin         = require('mini-css-extract-plugin')
@@ -67,7 +65,6 @@ const WP_CONFIG = {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          // 'style-loader',
           'css-loader'
         ]
       },
@@ -75,7 +72,6 @@ const WP_CONFIG = {
         test: /\.styl/,
         use: [
           MiniCssExtractPlugin.loader,
-          // 'style-loader',
           'css-loader',
           'stylus-loader'
         ]
@@ -165,14 +161,6 @@ const WP_CONFIG = {
       template: `${ROOT_DIR}/static/template.html`,
       favicon: `${ROOT_DIR}/static/favicon.png`
     }),
-    new FaviconsWebpackPlugin({
-      logo: `${ROOT_DIR}/static/favicon.png`,
-      prefix: 'icons/',
-      emitStats: false,
-      // statsFilename: 'iconstats-[hash].json',
-      name: CONFIG.appName,
-      inject: true
-    }),
     new CopyWebpackPlugin([
       {
         from: `${ROOT_DIR}/static`,
@@ -190,7 +178,6 @@ const WP_CONFIG = {
       swDest: 'sw.js',
       excludeChunks: ['chunk-name-1', 'chunk-name-2']
     }),
-    new DashboardPlugin(),
     new Reporter(),
   ]
 }

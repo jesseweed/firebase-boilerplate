@@ -2,7 +2,6 @@
 import { inject, observer } from 'mobx-preact'
 import PropTypes            from 'prop-types'
 import { h, Component }     from 'preact'
-// import React                from 'react';
 
 // UTILITIES
 import Util                 from '@Util'
